@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Light Map</name>
+	<author>Syrus</author>
+	<url></url>
+	<supportedVersions>
+		<li>1.2</li>
+	</supportedVersions>
+	<packageId>Syrus.LightMap</packageId>
+	<description>Adds an overlay which shows the brightness of tiles on the map.
+
+Can be toggled to only show the overlay for roofed areas.
+
+Dark areas are colored black and red.
+Lit areas are color in shades of green if at 50% or above and yellow if below 50%.
+Brightly lit areas show up white.</description>
+</ModMetaData>

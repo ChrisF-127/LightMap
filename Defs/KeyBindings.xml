@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Defs>
+
+	<KeyBindingDef>
+		<category>LightMap</category>
+		<defName>ToggleLightMap</defName>
+		<label>Toggle brightness overlay</label>
+	</KeyBindingDef>
+	
+	<KeyBindingDef>
+		<category>LightMap</category>
+		<defName>TogglePathMap</defName>
+		<label>Toggle movement speed overlay</label>
+	</KeyBindingDef>
+	
+</Defs>
