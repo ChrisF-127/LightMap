@@ -10,8 +10,6 @@ namespace LightMap.Overlays
 		public PathOverlay()
 		{
 			CreateMappedColors();
-
-			Update(true);
 		}
 
 		#region FIELDS

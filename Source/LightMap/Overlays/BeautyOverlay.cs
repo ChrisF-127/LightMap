@@ -17,16 +17,19 @@ namespace LightMap.Overlays
 
 	public class BeautyOverlay : OverlayBase
 	{
-		public BeautyOverlay()
+		public BeautyOverlay(bool useAverage)
 		{
 			CreateMappedColors();
 
-			if (false)
+			_useAverage = useAverage;
+			if (!_useAverage)
 			{
+				_beautyFactor = 10f;
 				_beautyCalculation = (root, map) => BeautyUtility.CellBeauty(root, map);
 			}
-			else
+			else // calculate average beauty; used for pawn beauty need but VERY VERY SLOW !
 			{
+				_beautyFactor = 1f;
 				_beautyCalculation = (root, map) =>
 				{
 					float beauty = 0f;
@@ -41,14 +44,13 @@ namespace LightMap.Overlays
 					return count == 0 ? float.MinValue : beauty / count;
 				};
 			}
-
-			Update(true);
 		}
 
 		#region FIELDS
 		private Color[] _mappedColors = null;
-		
-		private readonly float _beautyFactor = 1f / 1f;
+
+		private readonly bool _useAverage = false;
+		private readonly float _beautyFactor = 1f;
 		private readonly List<Thing> _countedThingList = new List<Thing>();
 
 		private readonly Func<IntVec3, Map, float> _beautyCalculation = null;
@@ -81,7 +83,7 @@ namespace LightMap.Overlays
 			if (value == float.MinValue)
 				return _mappedColors[21];
 
-			int index = (int)(value * _beautyFactor) + 10;
+			int index = (int)(value / _beautyFactor) + 10;
 			return _mappedColors[index < 0 ? 0 : index > 20 ? 20 : index];
 		}
 		#endregion
@@ -96,6 +98,15 @@ namespace LightMap.Overlays
 			var beauty = GetBeautyForIndex(index, map);
 			_nextColor = GetColorForBeauty(beauty);
 			return true;
+		}
+
+		public override void Update(int tick, int delay)
+		{
+			base.Update(tick, delay);
+
+			// Pause the game because we'd not want this to be executed more than once.
+			if (_useAverage)
+				Find.TickManager.Pause();
 		}
 		#endregion
 	}

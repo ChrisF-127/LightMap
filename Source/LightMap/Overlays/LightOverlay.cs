@@ -12,8 +12,6 @@ namespace LightMap.Overlays
 			CreateMappedColors();
 
 			_showRoofedOnly = Main.Instance.GetConfiguredShowRoofedOnly();
-
-			Update(true);
 		}
 
 		#region FIELDS

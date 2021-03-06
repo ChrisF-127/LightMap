@@ -13,6 +13,8 @@ namespace LightMap.Overlays
 		#region FIELDS
 		protected CellBoolDrawer _drawerInt = null;
 		protected Color _nextColor;
+
+		protected int _nextUpdateTick = 0;
 		#endregion
 
 		#region PROPERTIES
@@ -40,12 +42,16 @@ namespace LightMap.Overlays
 		#endregion
 
 		#region PUBLIC METHODS
-		public virtual void Update(bool update)
+		public virtual void Update(int tick, int delay)
 		{
 			Drawer.MarkForDraw();
 			
-			if (update)
+			if (tick >= _nextUpdateTick)
+			{
 				Drawer.SetDirty();
+
+				_nextUpdateTick = tick + delay;
+			}
 
 			Drawer.CellBoolDrawerUpdate();
 		}

@@ -29,8 +29,7 @@ namespace LightMap
 		private SettingHandle<int> _opacity;
 		private SettingHandle<int> _updateDelay;
 		private SettingHandle<bool> _lightMapShowRoofedOnly;
-
-		public int _nextUpdateTick = 0;
+		private SettingHandle<bool> _beautyMapUseAverage;
 		#endregion
 
 		#region PROPERTIES
@@ -43,40 +42,32 @@ namespace LightMap
 		public void UpdateMaps()
 		{
 			var tick = Find.TickManager.TicksGame;
-			bool update = tick >= _nextUpdateTick;
+			var delay = _updateDelay;
 
 			if (ShowLightMap)
 			{
 				if (_lightMap == null)
 					_lightMap = new LightOverlay();
-				else
-					_lightMap.Update(update);
+				_lightMap.Update(tick, delay);
 			}
 
 			if (ShowPathMap)
 			{
 				if (_pathMap == null)
 					_pathMap = new PathOverlay();
-				else
-					_pathMap.Update(update);
+				_pathMap.Update(tick, delay);
 			}
 
 			if (ShowBeautyMap)
 			{
 				if (_beautyMap == null)
-					_beautyMap = new BeautyOverlay();
-				else
-					_beautyMap.Update(update);
+					_beautyMap = new BeautyOverlay(_beautyMapUseAverage);
+				_beautyMap.Update(tick, delay);
 			}
-
-			if (update)
-				_nextUpdateTick = tick + _updateDelay;
 		}
 
 		public void ResetMaps()
 		{
-			_nextUpdateTick = 0;
-
 			_lightMap = null;
 			_pathMap = null;
 			_beautyMap = null;
@@ -138,7 +129,17 @@ namespace LightMap
 				"Only show brightness overlay for roofed areas", // TODO translatable string
 				true);
 			_lightMapShowRoofedOnly.OnValueChanged = val =>
-				ResetMaps(); 
+				ResetMaps();
+
+			_beautyMapUseAverage = Settings.GetHandle(
+				"beautyMapUseAverage",
+				"Beauty Map: use average beauty; WARNING >>", // TODO translatable string
+				">> WARNING <<" +
+					"\nThis mode is VERY VERY SLOW, but calculates the actual beauty as used for the beauty need of pawns." +
+					"\nYou will not be able to unpause the game while this map mode is up as a safety precaution!", // TODO translatable string
+				false);
+			_beautyMapUseAverage.OnValueChanged = val =>
+				ResetMaps();
 		}
 		#endregion
 	}
