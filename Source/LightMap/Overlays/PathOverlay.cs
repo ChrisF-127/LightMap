@@ -3,13 +3,15 @@ using UnityEngine;
 using RimWorld;
 using Verse;
 
-namespace LightMap
+namespace LightMap.Overlays
 {
-	public class PathMap : MapOverlayBase
+	public class PathOverlay : OverlayBase
 	{
-		public PathMap()
+		public PathOverlay()
 		{
 			CreateMappedColors();
+
+			Update(true);
 		}
 
 		#region FIELDS
@@ -17,11 +19,10 @@ namespace LightMap
 		#endregion
 
 		#region PROPERTIES
-		public override bool ShowMap => Main.Instance.ShowPathMap;
 		#endregion
 
-		#region PUBLIC METHODS
-		public void CreateMappedColors()
+		#region PRIVATE METHODS
+		private void CreateMappedColors()
 		{
 			_mappedColors = new Color[13];
 
@@ -42,7 +43,7 @@ namespace LightMap
 			_mappedColors[0] = new Color	(0,		0,		0); // no path; black
 		}
 
-		public Color GetColorForValue(int pathCost)
+		private Color GetColorForPathCost(int pathCost)
 		{
 			if (pathCost == 10000) // no path
 				return _mappedColors[0]; 
@@ -63,7 +64,7 @@ namespace LightMap
 				return false;
 
 			var path = map.pathGrid.pathGrid[index];
-			_nextColor = GetColorForValue(path);
+			_nextColor = GetColorForPathCost(path);
 			return true;
 		}
 		#endregion

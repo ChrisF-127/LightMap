@@ -13,5 +13,6 @@ namespace LightMap
 	{
 		public static KeyBindingDef ToggleLightMap;
 		public static KeyBindingDef TogglePathMap;
+		public static KeyBindingDef ToggleBeautyMap;
 	}
 }

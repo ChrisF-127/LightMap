@@ -5,6 +5,7 @@ using RimWorld.Planet;
 using Verse;
 using HugsLib.Settings;
 using HugsLib.Utils;
+using LightMap.Overlays;
 
 namespace LightMap
 {
@@ -17,14 +18,19 @@ namespace LightMap
 
 		#region FIELDS
 		public bool ShowLightMap;
-		private LightMap _lightMap;
+		private LightOverlay _lightMap;
 
 		public bool ShowPathMap;
-		private PathMap _pathMap;
+		private PathOverlay _pathMap;
+
+		public bool ShowBeautyMap;
+		private BeautyOverlay _beautyMap;
 
 		private SettingHandle<int> _opacity;
 		private SettingHandle<int> _updateDelay;
 		private SettingHandle<bool> _lightMapShowRoofedOnly;
+
+		public int _nextUpdateTick = 0;
 		#endregion
 
 		#region PROPERTIES
@@ -35,20 +41,45 @@ namespace LightMap
 
 		#region PUBLIC METHODS
 		public void UpdateMaps()
-        {
-            if (_lightMap == null)
-                _lightMap = new LightMap();
-			if (_pathMap == null)
-				_pathMap = new PathMap();
+		{
+			var tick = Find.TickManager.TicksGame;
+			bool update = tick >= _nextUpdateTick;
 
-			_lightMap.Update(_updateDelay);
-			_pathMap.Update(_updateDelay);
+			if (ShowLightMap)
+			{
+				if (_lightMap == null)
+					_lightMap = new LightOverlay();
+				else
+					_lightMap.Update(update);
+			}
+
+			if (ShowPathMap)
+			{
+				if (_pathMap == null)
+					_pathMap = new PathOverlay();
+				else
+					_pathMap.Update(update);
+			}
+
+			if (ShowBeautyMap)
+			{
+				if (_beautyMap == null)
+					_beautyMap = new BeautyOverlay();
+				else
+					_beautyMap.Update(update);
+			}
+
+			if (update)
+				_nextUpdateTick = tick + _updateDelay;
 		}
 
 		public void ResetMaps()
 		{
+			_nextUpdateTick = 0;
+
 			_lightMap = null;
 			_pathMap = null;
+			_beautyMap = null;
 		}
 
 		public float GetConfiguredOpacity() => 
@@ -63,9 +94,7 @@ namespace LightMap
         {
             if (Current.ProgramState != ProgramState.Playing 
 				|| Find.CurrentMap == null 
-				|| WorldRendererUtility.WorldRenderedNow 
-				|| _lightMap == null
-				|| _pathMap == null)
+				|| WorldRendererUtility.WorldRenderedNow)
                 return;
 
 			if (Event.current.type != EventType.KeyDown 
@@ -73,18 +102,11 @@ namespace LightMap
                 return;
 
             if (LightMapKeyBingings.ToggleLightMap.JustPressed)
-            {
-                if (WorldRendererUtility.WorldRenderedNow)
-                    return;
                 ShowLightMap = !ShowLightMap;
-			}
-
 			if (LightMapKeyBingings.TogglePathMap.JustPressed)
-			{
-				if (WorldRendererUtility.WorldRenderedNow)
-					return;
 				ShowPathMap = !ShowPathMap;
-			}
+			if (LightMapKeyBingings.ToggleBeautyMap.JustPressed)
+				ShowBeautyMap = !ShowBeautyMap;
 		}
 
         public override void WorldLoaded()
@@ -101,17 +123,14 @@ namespace LightMap
 				30,
                 Validators.IntRangeValidator(1, 100));
 			_opacity.OnValueChanged = val =>
-			{
-				_lightMap?.Reset();
-				_pathMap?.Reset();
-			};
+				ResetMaps();
 
 			_updateDelay = Settings.GetHandle(
 				"updateDelay",
                 "Update delay", // TODO translatable string
 				"Update interval for the overlay", // TODO translatable string
 				100,
-                Validators.IntRangeValidator(1, 9999));
+                Validators.IntRangeValidator(1, 10000));
 
 			_lightMapShowRoofedOnly = Settings.GetHandle(
 				"lightMapShowRoofedOnly",
@@ -119,7 +138,7 @@ namespace LightMap
 				"Only show brightness overlay for roofed areas", // TODO translatable string
 				true);
 			_lightMapShowRoofedOnly.OnValueChanged = val =>
-				_lightMap?.Reset();
+				ResetMaps(); 
 		}
 		#endregion
 	}

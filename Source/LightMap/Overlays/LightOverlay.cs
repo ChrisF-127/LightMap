@@ -3,56 +3,49 @@ using UnityEngine;
 using RimWorld;
 using Verse;
 
-namespace LightMap
+namespace LightMap.Overlays
 {
-    public class LightMap : MapOverlayBase
+    public class LightOverlay : OverlayBase
 	{
-        public LightMap()
+        public LightOverlay()
         {
 			CreateMappedColors();
+
+			_showRoofedOnly = Main.Instance.GetConfiguredShowRoofedOnly();
+
+			Update(true);
 		}
 
 		#region FIELDS
 		private Color[] _mappedColors = null;
-		private bool? _showRoofedOnly = null;
+		private readonly bool _showRoofedOnly;
 		#endregion
 
 		#region PROPERTIES
-		public override bool ShowMap => Main.Instance.ShowLightMap;
-
-		public bool ShowRoofedOnly
-		{
-			get
-			{
-				if (_showRoofedOnly == null)
-					_showRoofedOnly = Main.Instance.GetConfiguredShowRoofedOnly();
-				return _showRoofedOnly == true;
-			}
-		}
 		#endregion
 
-		#region PUBLIC METHODS
-		public void CreateMappedColors()
-        {
+		#region PRIVATE METHODS
+		private void CreateMappedColors()
+		{
 			_mappedColors = new Color[11];
 
-			_mappedColors[10] = new Color	(1,		1, 1);
-			_mappedColors[9] = new Color	(0.75f, 1, 1);
+			_mappedColors[10] = new Color(1, 1, 1);
+			_mappedColors[9] = new Color(0.75f, 1, 1);
 
-			_mappedColors[8] = new Color	(0,		1, 1);
-			_mappedColors[7] = new Color	(0,		1, 0.75f);
-			_mappedColors[6] = new Color	(0,		1, 0.5f);
-			_mappedColors[5] = new Color	(0,		1, 0);
+			_mappedColors[8] = new Color(0, 1, 1);
+			_mappedColors[7] = new Color(0, 1, 0.75f);
+			_mappedColors[6] = new Color(0, 1, 0.5f);
+			_mappedColors[5] = new Color(0, 1, 0);
 
-			_mappedColors[4] = new Color	(0.75f, 1, 0);
-			_mappedColors[3] = new Color	(1,		1, 0);
+			_mappedColors[4] = new Color(0.75f, 1, 0);
+			_mappedColors[3] = new Color(1, 1, 0);
 
-			_mappedColors[2] = new Color	(1,		0, 0);
-			_mappedColors[1] = new Color	(0.5f,	0, 0);
-			_mappedColors[0] = new Color	(0,		0, 0);
+			_mappedColors[2] = new Color(1, 0, 0);
+			_mappedColors[1] = new Color(0.5f, 0, 0);
+			_mappedColors[0] = new Color(0, 0, 0);
 		}
 
-		public Color GetColorForGlow(float glow)
+		private Color GetColorForGlow(float glow)
 		{
 			int index = (int)(glow * 10.0);
 			if (index > 10)
@@ -71,7 +64,7 @@ namespace LightMap
                 return false;
 
 			var cell = map.cellIndices.IndexToCell(index);
-			if (!ShowRoofedOnly)
+			if (!_showRoofedOnly)
 			{
 				var glow = map.glowGrid.GameGlowAt(cell);
 				_nextColor = GetColorForGlow(glow);
@@ -97,12 +90,6 @@ namespace LightMap
 				//}
 			}
             return false;
-		}
-
-		public override void Reset()
-		{
-			_showRoofedOnly = null;
-			base.Reset();
 		}
 		#endregion
 	}

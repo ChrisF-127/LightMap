@@ -52,6 +52,13 @@ namespace LightMap
 					Resources.IconPath, 
 					"Show Movement Speed Map", // TODO translatable string
 					SoundDefOf.Mouseover_ButtonToggle);
+
+			if (Resources.IconBeauty != null)
+				row.ToggleableIcon(
+					ref Main.Instance.ShowBeautyMap,
+					Resources.IconBeauty,
+					"Show Beauty Map", // TODO translatable string
+					SoundDefOf.Mouseover_ButtonToggle);
 		}
 	}
 

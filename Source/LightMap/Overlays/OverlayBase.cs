@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
-namespace LightMap
+namespace LightMap.Overlays
 {
-	public abstract class MapOverlayBase : ICellBoolGiver
+	public abstract class OverlayBase : ICellBoolGiver
 	{
 		#region FIELDS
 		protected CellBoolDrawer _drawerInt = null;
-		protected int _nextUpdateTick = 0;
 		protected Color _nextColor;
 		#endregion
 
@@ -31,40 +30,24 @@ namespace LightMap
 				return _drawerInt;
 			}
 		}
-
-		public virtual bool ShowMap { get; }
 		#endregion
 
 		#region INTERFACES
-		public virtual bool GetCellBool(int index) =>
-			throw new NotImplementedException();
+		public abstract bool GetCellBool(int index);
 		
 		public virtual Color GetCellExtraColor(int index) =>
 			_nextColor;
 		#endregion
 
 		#region PUBLIC METHODS
-		public virtual void Update(int updateDelay)
+		public virtual void Update(bool update)
 		{
-			if (ShowMap)
-			{
-				Drawer.MarkForDraw();
+			Drawer.MarkForDraw();
+			
+			if (update)
+				Drawer.SetDirty();
 
-				var tick = Find.TickManager.TicksGame;
-				if (tick >= _nextUpdateTick)
-				{
-					Drawer.SetDirty();
-					_nextUpdateTick = tick + updateDelay;
-				}
-
-				Drawer.CellBoolDrawerUpdate();
-			}
-		}
-
-		public virtual void Reset()
-		{
-			_drawerInt = null;
-			_nextUpdateTick = 0;
+			Drawer.CellBoolDrawerUpdate();
 		}
 		#endregion
 	}
