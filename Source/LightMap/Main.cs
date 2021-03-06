@@ -127,16 +127,17 @@ namespace LightMap
 				"lightMapShowRoofedOnly",
 				"Light Map: roofed areas only", // TODO translatable string
 				"Only show brightness overlay for roofed areas", // TODO translatable string
-				true);
+				false);
 			_lightMapShowRoofedOnly.OnValueChanged = val =>
 				ResetMaps();
 
 			_beautyMapUseAverage = Settings.GetHandle(
 				"beautyMapUseAverage",
-				"Beauty Map: use average beauty; WARNING >>", // TODO translatable string
+				"Beauty Map: use average beauty; WARNING!", // TODO translatable string
 				">> WARNING <<" +
-					"\nThis mode is VERY VERY SLOW, but calculates the actual beauty as used for the beauty need of pawns." +
-					"\nYou will not be able to unpause the game while this map mode is up as a safety precaution!", // TODO translatable string
+					"\nThis mode is VERY VERY SLOW, but calculates the average beauty per tile as used for the beauty need of pawns." +
+					"\n" +
+					"\nYou will not be able to unpause the game while this overlay is active!", // TODO translatable string
 				false);
 			_beautyMapUseAverage.OnValueChanged = val =>
 				ResetMaps();
