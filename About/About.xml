@@ -14,4 +14,16 @@ Can be toggled to only show the overlay for roofed areas.
 Dark areas are colored black and red.
 Lit areas are color in shades of green if at 50% or above and yellow if below 50%.
 Brightly lit areas show up white.</description>
+
+	<modDependencies>
+		<li>
+			<packageId>UnlimitedHugs.HugsLib</packageId>
+			<displayName>HugsLib</displayName>
+			<downloadUrl>https://github.com/UnlimitedHugs/RimworldHugsLib/releases/latest</downloadUrl>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>UnlimitedHugs.HugsLib</li>
+	</loadAfter>
 </ModMetaData>

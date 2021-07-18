@@ -61,7 +61,7 @@ namespace LightMap.Overlays
 			if (map.fogGrid.IsFogged(index))
 				return false;
 
-			var path = map.pathGrid.pathGrid[index];
+			var path = map.pathing.Normal.pathGrid.pathGrid[index];
 			_nextColor = GetColorForPathCost(path);
 			return true;
 		}

@@ -113,7 +113,7 @@ namespace LightMap
 				"Set the overlay opacity", // TODO translatable string
 				30,
                 Validators.IntRangeValidator(1, 100));
-			_opacity.OnValueChanged = val =>
+			_opacity.ValueChanged += val =>
 				ResetMaps();
 
 			_updateDelay = Settings.GetHandle(
@@ -128,7 +128,7 @@ namespace LightMap
 				"Light Map: roofed areas only", // TODO translatable string
 				"Only show brightness overlay for roofed areas", // TODO translatable string
 				false);
-			_lightMapShowRoofedOnly.OnValueChanged = val =>
+			_lightMapShowRoofedOnly.ValueChanged += val =>
 				ResetMaps();
 
 			_beautyMapUseAverage = Settings.GetHandle(
@@ -139,7 +139,7 @@ namespace LightMap
 					"\n" +
 					"\nYou will not be able to unpause the game while this overlay is active!", // TODO translatable string
 				false);
-			_beautyMapUseAverage.OnValueChanged = val =>
+			_beautyMapUseAverage.ValueChanged += val =>
 				ResetMaps();
 		}
 		#endregion

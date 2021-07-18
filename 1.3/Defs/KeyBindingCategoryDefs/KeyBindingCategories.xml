@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Defs>
+
+	<KeyBindingCategoryDef>
+		<defName>LightMap</defName>
+		<label>Light Map</label>
+		<description>Shortcuts for the Light Map mod.</description>
+	</KeyBindingCategoryDef>
+	
+</Defs>
