@@ -10,11 +10,6 @@ using System.Runtime.InteropServices;
 
 namespace LightMap.Overlays
 {
-	/*
-	 * Todo
-	 * - toggle between tile base beauty or 
-	 */
-
 	public class BeautyOverlay : OverlayBase
 	{
 		public BeautyOverlay(bool useAverage)

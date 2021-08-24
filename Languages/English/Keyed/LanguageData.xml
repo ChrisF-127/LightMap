@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<!-- Buttons -->
+	<SY_LM.ShowLightMap>Show Light Map</SY_LM.ShowLightMap>
+	<SY_LM.ShowMovementSpeedMap>Show Movement Speed Map</SY_LM.ShowMovementSpeedMap>
+	<SY_LM.ShowBeautyMap>Show Beauty Map</SY_LM.ShowBeautyMap>
+
+	<!-- Settings -->
+	<SY_LM.Opacity>Opacity</SY_LM.Opacity>
+	<SY_LM.TooltipOpacity>Set the overlay opacity</SY_LM.TooltipOpacity>
+	
+	<SY_LM.UpdateDelay>Update delay</SY_LM.UpdateDelay>
+	<SY_LM.TooltipUpdateDelay>Update interval for the overlay</SY_LM.TooltipUpdateDelay>
+	
+	<SY_LM.LightMapIconButtonVisible>Light: Show icon button</SY_LM.LightMapIconButtonVisible>
+	<SY_LM.LightMapRoofedAreasOnly>Light: Roofed areas only</SY_LM.LightMapRoofedAreasOnly>
+	<SY_LM.TooltipLightMapRoofedAreasOnly>Only show brightness overlay for roofed areas</SY_LM.TooltipLightMapRoofedAreasOnly>
+	
+	<SY_LM.MovementSpeedMapIconButtonVisible>Movement Speed: Show icon button</SY_LM.MovementSpeedMapIconButtonVisible>
+	
+	<SY_LM.BeautyMapIconButtonVisible>Beauty: Show icon button</SY_LM.BeautyMapIconButtonVisible>
+	<SY_LM.BeautyMapAverageBeauty>Beauty: Use average beauty; WARNING!</SY_LM.BeautyMapAverageBeauty>
+	<SY_LM.TooltipBeautyMapAverageBeauty>WARNING
+This mode is VERY VERY SLOW, but calculates the average beauty per tile as used for the beauty need of pawns.
+
+You will not be able to unpause the game while this overlay is active!</SY_LM.TooltipBeautyMapAverageBeauty>
+
+	<SY_LM.TooltipMapIconButtonVisible>Toggles whether the icon button for this map mode is shown ingame in the lower right</SY_LM.TooltipMapIconButtonVisible>	
+</LanguageData>

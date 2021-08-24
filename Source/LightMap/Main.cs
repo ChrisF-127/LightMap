@@ -28,7 +28,10 @@ namespace LightMap
 
 		private SettingHandle<int> _opacity;
 		private SettingHandle<int> _updateDelay;
+		public SettingHandle<bool> LightMapIconButtonVisible;
 		private SettingHandle<bool> _lightMapShowRoofedOnly;
+		public SettingHandle<bool> MovementSpeedMapIconButtonVisible;
+		public SettingHandle<bool> BeautyMapIconButtonVisible;
 		private SettingHandle<bool> _beautyMapUseAverage;
 		#endregion
 
@@ -107,10 +110,10 @@ namespace LightMap
 
 		public override void DefsLoaded()
         {
-            _opacity = Settings.GetHandle(
-                "opacity", 
-				"Opacity", // TODO translatable string
-				"Set the overlay opacity", // TODO translatable string
+			_opacity = Settings.GetHandle(
+				"opacity",
+				"SY_LM.Opacity".Translate(),
+				"SY_LM.TooltipOpacity".Translate(),
 				30,
                 Validators.IntRangeValidator(1, 100));
 			_opacity.ValueChanged += val =>
@@ -118,26 +121,44 @@ namespace LightMap
 
 			_updateDelay = Settings.GetHandle(
 				"updateDelay",
-                "Update delay", // TODO translatable string
-				"Update interval for the overlay", // TODO translatable string
+                "SY_LM.UpdateDelay".Translate(),
+				"SY_LM.TooltipUpdateDelay".Translate(),
 				100,
                 Validators.IntRangeValidator(1, 10000));
 
+
+			LightMapIconButtonVisible = Settings.GetHandle(
+				"lightMapIconButtonVisible",
+				"SY_LM.LightMapIconButtonVisible".Translate(),
+				"SY_LM.TooltipMapIconButtonVisible".Translate(),
+				true);
+
 			_lightMapShowRoofedOnly = Settings.GetHandle(
 				"lightMapShowRoofedOnly",
-				"Light Map: roofed areas only", // TODO translatable string
-				"Only show brightness overlay for roofed areas", // TODO translatable string
+				"SY_LM.LightMapRoofedAreasOnly".Translate(),
+				"SY_LM.TooltipLightMapRoofedAreasOnly".Translate(),
 				false);
 			_lightMapShowRoofedOnly.ValueChanged += val =>
 				ResetMaps();
 
+
+			MovementSpeedMapIconButtonVisible = Settings.GetHandle(
+				"movementSpeedMapIconButtonVisible",
+				"SY_LM.MovementSpeedMapIconButtonVisible".Translate(),
+				"SY_LM.TooltipMapIconButtonVisible".Translate(),
+				false);
+
+
+			BeautyMapIconButtonVisible = Settings.GetHandle(
+				"beautyMapIconButtonVisible",
+				"SY_LM.BeautyMapIconButtonVisible".Translate(),
+				"SY_LM.TooltipMapIconButtonVisible".Translate(),
+				false);
+
 			_beautyMapUseAverage = Settings.GetHandle(
 				"beautyMapUseAverage",
-				"Beauty Map: use average beauty; WARNING!", // TODO translatable string
-				">> WARNING <<" +
-					"\nThis mode is VERY VERY SLOW, but calculates the average beauty per tile as used for the beauty need of pawns." +
-					"\n" +
-					"\nYou will not be able to unpause the game while this overlay is active!", // TODO translatable string
+				"SY_LM.BeautyMapAverageBeauty".Translate(),
+				"SY_LM.TooltipBeautyMapAverageBeauty".Translate(),
 				false);
 			_beautyMapUseAverage.ValueChanged += val =>
 				ResetMaps();

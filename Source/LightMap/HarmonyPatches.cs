@@ -39,25 +39,25 @@ namespace LightMap
 			if (worldView || row == null)
 				return;
 
-			if (Resources.IconLight != null)
+			if (Main.Instance.LightMapIconButtonVisible && Resources.IconLight != null)
 				row.ToggleableIcon(
 					ref Main.Instance.ShowLightMap, 
-					Resources.IconLight, 
-					"Show Light Map", // TODO translatable string
+					Resources.IconLight,
+					"SY_LM.ShowLightMap".Translate(),
 					SoundDefOf.Mouseover_ButtonToggle);
 
-			if (Resources.IconPath != null)
+			if (Main.Instance.MovementSpeedMapIconButtonVisible && Resources.IconPath != null)
 				row.ToggleableIcon(
 					ref Main.Instance.ShowPathMap, 
-					Resources.IconPath, 
-					"Show Movement Speed Map", // TODO translatable string
+					Resources.IconPath,
+					"SY_LM.ShowMovementSpeedMap".Translate(),
 					SoundDefOf.Mouseover_ButtonToggle);
 
-			if (Resources.IconBeauty != null)
+			if (Main.Instance.BeautyMapIconButtonVisible && Resources.IconBeauty != null)
 				row.ToggleableIcon(
 					ref Main.Instance.ShowBeautyMap,
 					Resources.IconBeauty,
-					"Show Beauty Map", // TODO translatable string
+					"SY_LM.ShowBeautyMap".Translate(),
 					SoundDefOf.Mouseover_ButtonToggle);
 		}
 	}
