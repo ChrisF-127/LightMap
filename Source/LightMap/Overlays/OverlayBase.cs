@@ -46,7 +46,7 @@ namespace LightMap.Overlays
 		{
 			Drawer.MarkForDraw();
 			
-			if (tick >= _nextUpdateTick)
+			if (tick > _nextUpdateTick)
 			{
 				Drawer.SetDirty();
 
