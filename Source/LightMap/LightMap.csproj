@@ -42,6 +42,10 @@
       <HintPath>packages\UnlimitedHugs.Rimworld.HugsLib.9.0.1\lib\net472\HugsLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Progress-Renderer">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\2010777010\v1.4\Assemblies\Progress-Renderer.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

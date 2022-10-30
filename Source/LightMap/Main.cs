@@ -47,26 +47,17 @@ namespace LightMap
 			var tick = Find.TickManager.TicksGame;
 			var delay = _updateDelay;
 
-			if (ShowLightMap)
-			{
-				if (_lightMap == null)
-					_lightMap = new LightOverlay();
-				_lightMap.Update(tick, delay);
-			}
+			if (_lightMap == null)
+				_lightMap = new LightOverlay();
+			_lightMap.Update(tick, delay, ShowLightMap);
 
-			if (ShowPathMap)
-			{
-				if (_pathMap == null)
-					_pathMap = new PathOverlay();
-				_pathMap.Update(tick, delay);
-			}
+			if (_pathMap == null)
+				_pathMap = new PathOverlay();
+			_pathMap.Update(tick, delay, ShowPathMap);
 
-			if (ShowBeautyMap)
-			{
-				if (_beautyMap == null)
-					_beautyMap = new BeautyOverlay(_beautyMapUseAverage);
-				_beautyMap.Update(tick, delay);
-			}
+			if (_beautyMap == null)
+				_beautyMap = new BeautyOverlay(_beautyMapUseAverage);
+			_beautyMap.Update(tick, delay, ShowBeautyMap);
 		}
 
 		public void ResetMaps()

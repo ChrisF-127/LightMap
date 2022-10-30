@@ -42,15 +42,18 @@ namespace LightMap.Overlays
 		#endregion
 
 		#region PUBLIC METHODS
-		public virtual void Update(int tick, int delay)
+		public virtual void Update(int tick, int delay, bool show)
 		{
-			Drawer.MarkForDraw();
-			
-			if (tick > _nextUpdateTick)
+			if (show)
 			{
-				Drawer.SetDirty();
+				Drawer.MarkForDraw();
 
-				_nextUpdateTick = tick + delay;
+				if (tick > _nextUpdateTick)
+				{
+					Drawer.SetDirty();
+
+					_nextUpdateTick = tick + delay;
+				}
 			}
 
 			Drawer.CellBoolDrawerUpdate();

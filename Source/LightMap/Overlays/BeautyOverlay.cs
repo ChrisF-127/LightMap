@@ -95,12 +95,12 @@ namespace LightMap.Overlays
 			return true;
 		}
 
-		public override void Update(int tick, int delay)
+		public override void Update(int tick, int delay, bool show)
 		{
-			base.Update(tick, delay);
+			base.Update(tick, delay, show);
 
 			// Pause the game because we'd not want this to be executed more than once.
-			if (_useAverage)
+			if (show && _useAverage)
 				Find.TickManager.Pause();
 		}
 		#endregion

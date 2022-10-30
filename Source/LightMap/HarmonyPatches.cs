@@ -1,10 +1,32 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
+using System;
+using System.Reflection;
 using Verse;
+using HugsLib;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace LightMap
 {
+	[StaticConstructorOnStartup]
+	public static class HarmonyPatches
+	{
+		static HarmonyPatches()
+		{
+			var harmony = new Harmony("syrus.lightmap");
+
+			var type = Type.GetType("ProgressRenderer.MapComponent_RenderManager, Progress-Renderer");
+			if (type != null)
+			{
+				harmony.Patch(
+					type.GetProperty("Rendering", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).GetSetMethod(true),
+					postfix: new HarmonyMethod(typeof(ProgressRenderer_Patch), nameof(ProgressRenderer_Patch.ProgressRenderer_Rendering_Postfix)));
+			}
+		}
+	}
+
 	[HarmonyPatch(typeof(MapInterface), nameof(MapInterface.MapInterfaceUpdate))]
 	internal static class MapInterface_MapInterfaceUpdate
 	{
@@ -62,6 +84,36 @@ namespace LightMap
 		}
 	}
 
+	internal static class ProgressRenderer_Patch
+	{
+		internal static bool Light;
+		internal static bool Path;
+		internal static bool Beauty;
+
+		internal static void ProgressRenderer_Rendering_Postfix(bool value)
+		{
+			var instance = Main.Instance;
+			if (value)
+			{
+				Light = instance.ShowLightMap;
+				Path = instance.ShowPathMap;
+				Beauty = instance.ShowBeautyMap;
+
+				if (!ProgressRenderer.PRModSettings.renderOverlays)
+				{
+					instance.ShowLightMap = false;
+					instance.ShowPathMap = false;
+					instance.ShowBeautyMap = false;
+				}
+			}
+			else
+			{
+				instance.ShowLightMap = Light;
+				instance.ShowPathMap = Path;
+				instance.ShowBeautyMap = Beauty;
+			}
+		}
+	}
 
 
 	// Was testing to see if I could make pathCost accept negative values, 
