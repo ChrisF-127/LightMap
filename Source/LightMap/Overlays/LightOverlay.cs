@@ -64,7 +64,7 @@ namespace LightMap.Overlays
 			var cell = map.cellIndices.IndexToCell(index);
 			if (!_showRoofedOnly)
 			{
-				var glow = map.glowGrid.GameGlowAt(cell);
+				var glow = map.glowGrid.GroundGlowAt(cell);
 				_nextColor = GetColorForGlow(glow);
 				return true;
 			}
@@ -73,7 +73,7 @@ namespace LightMap.Overlays
 				var roof = cell.GetRoof(map);
 				if (roof != null)
 				{
-					var glow = map.glowGrid.GameGlowAt(cell);
+					var glow = map.glowGrid.GroundGlowAt(cell);
 					_nextColor = GetColorForGlow(glow);
 					return true;
 				}

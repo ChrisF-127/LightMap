@@ -46,7 +46,7 @@ namespace LightMap.Overlays
 
 		private readonly bool _useAverage = false;
 		private readonly float _beautyFactor = 1f;
-		private readonly List<Thing> _countedThingList = new List<Thing>();
+		private readonly HashSet<Thing> _countedThingList = new HashSet<Thing>();
 
 		private readonly Func<IntVec3, Map, float> _beautyCalculation = null;
 		#endregion
