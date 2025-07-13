@@ -33,7 +33,7 @@ namespace LightMap
 		public int OverlayOpacity
 		{
 			get => _overlayOpacity;
-			set => Util.SetValue(ref _overlayOpacity, value, LightMap.Instance.ResetMaps);
+			set => Util.SetValue(ref _overlayOpacity, value, v => LightMap.Instance.ResetMaps());
 		}
 		public int UpdateDelay { get; set; } = Default_UpdateDelay;
 
@@ -42,7 +42,7 @@ namespace LightMap
 		public bool LightMapShowRoofedOnly
 		{
 			get => _lightMapShowRoofedOnly;
-			set => Util.SetValue(ref _lightMapShowRoofedOnly, value, LightMap.Instance.ResetMaps);
+			set => Util.SetValue(ref _lightMapShowRoofedOnly, value, v => LightMap.Instance.ResetMaps());
 		}
 
 		public bool MovementSpeedMapIconButtonVisible { get; set; } = Default_MovementSpeedMapIconButtonVisible;
@@ -52,7 +52,7 @@ namespace LightMap
 		public bool BeautyMapUseAverage
 		{
 			get => _beautyMapUseAverage;
-			set => Util.SetValue(ref _beautyMapUseAverage, value, LightMap.Instance.ResetMaps);
+			set => Util.SetValue(ref _beautyMapUseAverage, value, v => LightMap.Instance.ResetMaps());
 		}
 		#endregion
 
