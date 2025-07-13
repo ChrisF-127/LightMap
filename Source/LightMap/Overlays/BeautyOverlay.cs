@@ -25,19 +25,7 @@ namespace LightMap.Overlays
 			else // calculate average beauty; used for pawn beauty need but VERY VERY SLOW !
 			{
 				_beautyFactor = 1f;
-				_beautyCalculation = (root, map) =>
-				{
-					float beauty = 0f;
-					int count = 0;
-					BeautyUtility.FillBeautyRelevantCells(root, map);
-					foreach (var cell in BeautyUtility.beautyRelevantCells)
-					{
-						beauty += BeautyUtility.CellBeauty(cell, map, _countedThingList);
-						count++;
-					}
-					_countedThingList.Clear();
-					return count == 0 ? float.MinValue : beauty / count;
-				};
+				_beautyCalculation = (root, map) => BeautyUtility.AverageBeautyPerceptible(root, map);
 			}
 		}
 

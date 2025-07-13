@@ -7,19 +7,18 @@ namespace LightMap.Overlays
 {
     public class LightOverlay : OverlayBase
 	{
-        public LightOverlay()
-        {
-			CreateMappedColors();
-
-			_showRoofedOnly = Main.Instance.GetConfiguredShowRoofedOnly();
-		}
-
 		#region FIELDS
 		private Color[] _mappedColors = null;
 		private readonly bool _showRoofedOnly;
 		#endregion
 
-		#region PROPERTIES
+		#region CONSTRUCTORS
+		public LightOverlay()
+		{
+			CreateMappedColors();
+
+			_showRoofedOnly = LightMap.Settings.LightMapShowRoofedOnly;
+		}
 		#endregion
 
 		#region PRIVATE METHODS

@@ -4,7 +4,6 @@ using RimWorld.Planet;
 using System;
 using System.Reflection;
 using Verse;
-using HugsLib;
 using System.Collections.Generic;
 using System.Collections;
 
@@ -16,6 +15,7 @@ namespace LightMap
 		static HarmonyPatches()
 		{
 			var harmony = new Harmony("syrus.lightmap");
+			harmony.PatchAll();
 
 			var type = Type.GetType("ProgressRenderer.MapComponent_RenderManager, Progress-Renderer");
 			if (type != null)
@@ -27,6 +27,26 @@ namespace LightMap
 		}
 	}
 
+	[HarmonyPatch(typeof(UIRoot), "UIRootOnGUI")]
+	internal static class UIRoot_OnGUI_Patch
+	{
+		[HarmonyPostfix]
+		public static void OnGUIHook()
+		{
+			LightMap.Instance.OnGUI();
+		}
+	}
+
+	[HarmonyPatch(typeof(Game), "FinalizeInit")]
+	public static class Game_FinalizeInit_Patch
+	{
+		[HarmonyPostfix]
+		public static void WorldLoadedHook()
+		{
+			LightMap.Instance.WorldLoaded();
+		}
+	}
+
 	[HarmonyPatch(typeof(MapInterface), nameof(MapInterface.MapInterfaceUpdate))]
 	internal static class MapInterface_MapInterfaceUpdate
 	{
@@ -34,10 +54,10 @@ namespace LightMap
 		static void Postfix()
 		{
 			if (Find.CurrentMap == null 
-				|| WorldRendererUtility.WorldRenderedNow)
+				|| WorldRendererUtility.WorldRendered)
 				return;
 
-			Main.Instance.UpdateMaps();
+			LightMap.Instance.UpdateMaps();
 		}
 	}
 
@@ -47,7 +67,7 @@ namespace LightMap
 		[HarmonyPostfix]
 		static void Postfix()
 		{
-			Main.Instance.ResetMaps();
+			LightMap.Instance.ResetMaps();
 		}
 	}
 
@@ -61,23 +81,23 @@ namespace LightMap
 			if (worldView || row == null)
 				return;
 
-			if (Main.Instance.LightMapIconButtonVisible && Resources.IconLight != null)
+			if (LightMap.Settings.LightMapIconButtonVisible && Resources.IconLight != null)
 				row.ToggleableIcon(
-					ref Main.Instance.ShowLightMap, 
+					ref LightMap.Instance.ShowLightMap, 
 					Resources.IconLight,
 					"SY_LM.ShowLightMap".Translate(),
 					SoundDefOf.Mouseover_ButtonToggle);
 
-			if (Main.Instance.MovementSpeedMapIconButtonVisible && Resources.IconPath != null)
+			if (LightMap.Settings.MovementSpeedMapIconButtonVisible && Resources.IconPath != null)
 				row.ToggleableIcon(
-					ref Main.Instance.ShowPathMap, 
+					ref LightMap.Instance.ShowPathMap, 
 					Resources.IconPath,
 					"SY_LM.ShowMovementSpeedMap".Translate(),
 					SoundDefOf.Mouseover_ButtonToggle);
 
-			if (Main.Instance.BeautyMapIconButtonVisible && Resources.IconBeauty != null)
+			if (LightMap.Settings.BeautyMapIconButtonVisible && Resources.IconBeauty != null)
 				row.ToggleableIcon(
-					ref Main.Instance.ShowBeautyMap,
+					ref LightMap.Instance.ShowBeautyMap,
 					Resources.IconBeauty,
 					"SY_LM.ShowBeautyMap".Translate(),
 					SoundDefOf.Mouseover_ButtonToggle);
@@ -92,7 +112,7 @@ namespace LightMap
 
 		internal static void ProgressRenderer_Rendering_Postfix(bool value)
 		{
-			var instance = Main.Instance;
+			var instance = LightMap.Instance;
 			if (value)
 			{
 				Light = instance.ShowLightMap;

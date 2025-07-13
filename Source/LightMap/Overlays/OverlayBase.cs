@@ -27,7 +27,7 @@ namespace LightMap.Overlays
 				if (_drawerInt == null)
 				{
 					var map = Find.CurrentMap;
-					_drawerInt = new CellBoolDrawer(this, map.Size.x, map.Size.z, Main.Instance.GetConfiguredOpacity());
+					_drawerInt = new CellBoolDrawer(this, map.Size.x, map.Size.z, LightMap.Settings.OverlayOpacity * 0.01f);
 				}
 				return _drawerInt;
 			}
