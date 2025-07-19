@@ -39,7 +39,7 @@ namespace LightMap
 		{
 			if (Current.ProgramState != ProgramState.Playing
 				|| Find.CurrentMap == null
-				|| WorldRendererUtility.WorldRendered)
+				|| !WorldRendererUtility.DrawingMap)
 				return;
 
 			if (Event.current.type != EventType.KeyDown
@@ -61,6 +61,11 @@ namespace LightMap
 
 		public void UpdateMaps()
 		{
+			if (Current.ProgramState != ProgramState.Playing
+				|| Find.CurrentMap == null
+				|| !WorldRendererUtility.DrawingMap)
+				return;
+
 			var tick = Find.TickManager.TicksGame;
 			var delay = Settings.UpdateDelay;
 

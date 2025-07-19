@@ -53,10 +53,6 @@ namespace LightMap
 		[HarmonyPostfix]
 		static void Postfix()
 		{
-			if (Find.CurrentMap == null 
-				|| WorldRendererUtility.WorldRendered)
-				return;
-
 			LightMap.Instance.UpdateMaps();
 		}
 	}
