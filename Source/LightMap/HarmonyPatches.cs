@@ -21,7 +21,7 @@ namespace LightMap
 			if (type != null)
 			{
 				harmony.Patch(
-					type.GetProperty("Rendering", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).GetSetMethod(true),
+					AccessTools.PropertySetter(type, "Rendering"),
 					postfix: new HarmonyMethod(typeof(ProgressRenderer_Patch), nameof(ProgressRenderer_Patch.ProgressRenderer_Rendering_Postfix)));
 			}
 		}
@@ -115,7 +115,7 @@ namespace LightMap
 				Path = instance.ShowPathMap;
 				Beauty = instance.ShowBeautyMap;
 
-				if (!ProgressRenderer.PRModSettings.renderOverlays)
+				if (!ProgressRenderer.PrModSettings.RenderOverlays)
 				{
 					instance.ShowLightMap = false;
 					instance.ShowPathMap = false;

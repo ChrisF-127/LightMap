@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Progress-Renderer">
-      <HintPath>F:\Steam\SteamApps\workshop\content\294100\2010777010\v1.4\Assemblies\Progress-Renderer.dll</HintPath>
+      <HintPath>F:\Steam\SteamApps\workshop\content\294100\2010777010\v1.6\Assemblies\Progress-Renderer.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Core" />
