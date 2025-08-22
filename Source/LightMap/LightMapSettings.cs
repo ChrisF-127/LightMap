@@ -1,13 +1,4 @@
-﻿using LightMap.Overlays;
-using RimWorld.Planet;
-using SyControlsBuilder;
-using System;
-using System.Collections.Generic;
-using System.Drawing.Printing;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SyControlsBuilder;
 using UnityEngine;
 using Verse;
 
@@ -16,6 +7,10 @@ namespace LightMap
 	public class LightMapSettings : ModSettings
 	{
 		#region CONSTANTS
+		public const int LightMapGradientSteps = 3;
+		public const int MovementSpeedMapGradientSteps = 3;
+		public const int BeautyMapGradientSteps = 2;
+
 		public const int Default_OverlayOpacity = 30;
 		public const int Default_UpdateDelay = 100;
 
@@ -37,22 +32,59 @@ namespace LightMap
 		}
 		public int UpdateDelay { get; set; } = Default_UpdateDelay;
 
+
 		public bool LightMapIconButtonVisible { get; set; } = Default_LightMapIconButtonVisible;
+
 		private bool _lightMapShowRoofedOnly = Default_LightMapShowRoofedOnly;
 		public bool LightMapShowRoofedOnly
 		{
 			get => _lightMapShowRoofedOnly;
 			set => Util.SetValue(ref _lightMapShowRoofedOnly, value, v => LightMap.Instance.ResetMaps());
 		}
+		
+		public ValueSetting<float>[] LightMapGradientHue { get; } = new ValueSetting<float>[LightMapGradientSteps];
+
 
 		public bool MovementSpeedMapIconButtonVisible { get; set; } = Default_MovementSpeedMapIconButtonVisible;
 
+		public ValueSetting<float>[] MovementSpeedMapGradientHue { get; } = new ValueSetting<float>[MovementSpeedMapGradientSteps];
+
+
 		public bool BeautyMapIconButtonVisible { get; set; } = Default_BeautyMapIconButtonVisible;
+
 		private bool _beautyMapUseAverage = Default_BeautyMapUseAverage;
 		public bool BeautyMapUseAverage
 		{
 			get => _beautyMapUseAverage;
 			set => Util.SetValue(ref _beautyMapUseAverage, value, v => LightMap.Instance.ResetMaps());
+		}
+
+		public ValueSetting<float>[] BeautyMapGradientHue { get; } = new ValueSetting<float>[BeautyMapGradientSteps];
+		#endregion
+
+		#region CONSTRUCTORS
+		public LightMapSettings()
+		{
+			//   0° = red
+			//  60° = yellow
+			// 120° = green
+			// 180° = cyan
+			// 240° = blue
+			// 300° = magenta
+
+			LightMapGradientHue[0] = new ValueSetting<float>(nameof(LightMapGradientHue) + "_dark",   "", "",   0f,   0f, reset); // default: red
+			LightMapGradientHue[1] = new ValueSetting<float>(nameof(LightMapGradientHue) + "_lit",	  "", "", 120f, 120f, reset); // default: green
+			LightMapGradientHue[2] = new ValueSetting<float>(nameof(LightMapGradientHue) + "_bright", "", "", 180f, 180f, reset); // default: cyan
+
+			MovementSpeedMapGradientHue[0] = new ValueSetting<float>(nameof(MovementSpeedMapGradientHue) + "_min",  "", "",   0f,   0f, reset); // default: red
+			MovementSpeedMapGradientHue[1] = new ValueSetting<float>(nameof(MovementSpeedMapGradientHue) + "_max",  "", "", 120f, 120f, reset); // default: green
+			MovementSpeedMapGradientHue[2] = new ValueSetting<float>(nameof(MovementSpeedMapGradientHue) + "_over", "", "", 180f, 180f, reset); // default: cyan
+
+			BeautyMapGradientHue[0] = new ValueSetting<float>(nameof(BeautyMapGradientHue) + "_min", "", "", 300f, 300f, reset); // default: magenta
+			BeautyMapGradientHue[1] = new ValueSetting<float>(nameof(BeautyMapGradientHue) + "_max", "", "", 180f, 180f, reset); // default: cyan
+
+			void reset(float v) =>
+				LightMap.Instance.ResetMaps();
 		}
 		#endregion
 
@@ -102,6 +134,16 @@ namespace LightMap
 					"SY_LM.TooltipLightMapRoofedAreasOnly".Translate(),
 					LightMapShowRoofedOnly,
 					Default_LightMapShowRoofedOnly);
+				ControlsBuilder.CreateMultiNumeric(
+					ref offsetY,
+					width,
+					"SY_LM.LightMapGradientHue".Translate(),
+					"SY_LM.TooltipLightMapGradientHue".Translate() + "\n\n" + "SY_LM.TooltipHue".Translate(),
+					LightMapGradientHue,
+					nameof(LightMapGradientHue),
+					0f,
+					360f,
+					unit: "°");
 
 				MovementSpeedMapIconButtonVisible = ControlsBuilder.CreateCheckbox(
 					ref offsetY,
@@ -110,6 +152,16 @@ namespace LightMap
 					"SY_LM.TooltipMapIconButtonVisible".Translate(),
 					MovementSpeedMapIconButtonVisible,
 					Default_MovementSpeedMapIconButtonVisible);
+				ControlsBuilder.CreateMultiNumeric(
+					ref offsetY,
+					width,
+					"SY_LM.MovementSpeedMapGradientHue".Translate(),
+					"SY_LM.TooltipMovementSpeedMapGradientHue".Translate() + "\n\n" + "SY_LM.TooltipHue".Translate(),
+					MovementSpeedMapGradientHue,
+					nameof(MovementSpeedMapGradientHue),
+					0f,
+					360f,
+					unit: "°");
 
 				BeautyMapIconButtonVisible = ControlsBuilder.CreateCheckbox(
 					ref offsetY,
@@ -125,6 +177,16 @@ namespace LightMap
 					"SY_LM.TooltipBeautyMapAverageBeauty".Translate(),
 					BeautyMapUseAverage,
 					Default_BeautyMapUseAverage);
+				ControlsBuilder.CreateMultiNumeric(
+					ref offsetY,
+					width,
+					"SY_LM.BeautyMapGradientHue".Translate(),
+					"SY_LM.TooltipBeautyMapGradientHue".Translate() + "\n\n" + "SY_LM.TooltipHue".Translate(),
+					BeautyMapGradientHue,
+					nameof(BeautyMapGradientHue),
+					0f,
+					360f,
+					unit: "°");
 			}
 			finally
 			{
@@ -139,6 +201,7 @@ namespace LightMap
 			base.ExposeData();
 
 			bool boolValue;
+			float floatValue;
 			int intValue;
 
 			intValue = OverlayOpacity;
@@ -155,9 +218,25 @@ namespace LightMap
 			Scribe_Values.Look(ref boolValue, nameof(LightMapShowRoofedOnly), Default_LightMapShowRoofedOnly);
 			LightMapShowRoofedOnly = boolValue;
 
+			for (int i = 0; i < LightMapGradientSteps; i++)
+			{
+				var hue = LightMapGradientHue[i];
+				floatValue = hue.Value;
+				Scribe_Values.Look(ref floatValue, hue.Name, hue.DefaultValue);
+				hue.Value = floatValue;
+			}
+
 			boolValue = MovementSpeedMapIconButtonVisible;
 			Scribe_Values.Look(ref boolValue, nameof(MovementSpeedMapIconButtonVisible), Default_MovementSpeedMapIconButtonVisible);
 			MovementSpeedMapIconButtonVisible = boolValue;
+
+			for (int i = 0; i < MovementSpeedMapGradientSteps; i++)
+			{
+				var hue = MovementSpeedMapGradientHue[i];
+				floatValue = hue.Value;
+				Scribe_Values.Look(ref floatValue, hue.Name, hue.DefaultValue);
+				hue.Value = floatValue;
+			}
 
 			boolValue = BeautyMapIconButtonVisible;
 			Scribe_Values.Look(ref boolValue, nameof(BeautyMapIconButtonVisible), Default_BeautyMapIconButtonVisible);
@@ -165,6 +244,14 @@ namespace LightMap
 			boolValue = BeautyMapUseAverage;
 			Scribe_Values.Look(ref boolValue, nameof(BeautyMapUseAverage), Default_BeautyMapUseAverage);
 			BeautyMapUseAverage = boolValue;
+
+			for (int i = 0; i < BeautyMapGradientSteps; i++)
+			{
+				var hue = BeautyMapGradientHue[i];
+				floatValue = hue.Value;
+				Scribe_Values.Look(ref floatValue, hue.Name, hue.DefaultValue);
+				hue.Value = floatValue;
+			}
 		}
 		#endregion
 	}

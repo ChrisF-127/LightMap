@@ -1,14 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace LightMap
 {
 	public static class ColorExtensions
 	{
+		public static Color ToColor(this float degree) => 
+			Color.HSVToRGB(degree / 360f, 1f, 1f);
+		public static Color ToWhite(this Color color, float min) =>
+			new Color(Mathf.Max(color.r, min), Mathf.Max(color.g, min), Mathf.Max(color.b, min));
+		public static Color ToBlack(this Color color, float max) =>
+			new Color(Mathf.Min(color.r, max), Mathf.Min(color.g, max), Mathf.Min(color.b, max));
+
 		public static Color ChangeLightness(this Color color, float coeff)
 		{
 			ColorToHSV(color, out float h, out float s, out float v);
@@ -85,11 +89,9 @@ namespace LightMap
 				goto OUT;
 			}
 
-			Degree(ref h);
+			h = h.Degree() / 60.0f;
 
-			h /= 60.0f;
-
-			Int32 i = (Int32)h;
+			int i = (int)h;
 			float ff = h - i;
 			float v0 = v * (1.0f - s);
 			float v1 = v * (1.0f - (s * ff));
@@ -138,7 +140,7 @@ namespace LightMap
 			return color;
 		}
 
-		private static float Degree(ref float degree)
+		public static float Degree(this float degree)
 		{
 			while (degree < 0)
 				degree += 360f;

@@ -15,8 +15,30 @@
 	<SY_LM.LightMapIconButtonVisible>Light: Show icon button</SY_LM.LightMapIconButtonVisible>
 	<SY_LM.LightMapRoofedAreasOnly>Light: Roofed areas only</SY_LM.LightMapRoofedAreasOnly>
 	<SY_LM.TooltipLightMapRoofedAreasOnly>Only show brightness overlay for roofed areas</SY_LM.TooltipLightMapRoofedAreasOnly>
+	<SY_LM.LightMapGradientHue>Light: Colour gradient hues</SY_LM.LightMapGradientHue>
+	<SY_LM.TooltipLightMapGradientHue>Set colours for the gradient as hue in degrees, according to light level:
+
+0+%	= black
+10+%	= 50% from black to [1st]
+20+%	= [1st] (dark)
+30+%	= 50% from [1st] to [2nd]
+40+%	= 67% from [1st] to [2nd]
+=50%	= [2nd] (lit, artificial)
+50+%	= [3rd] (plants grow)
+60+%	= 20% from [3rd] to white
+70+%	= 40% from [3rd] to white
+80+%	= 60% from [3rd] to white
+90+%	= 85% from [3rd] to white
+100+%	= white</SY_LM.TooltipLightMapGradientHue>
 	
 	<SY_LM.MovementSpeedMapIconButtonVisible>Movement Speed: Show icon button</SY_LM.MovementSpeedMapIconButtonVisible>
+	<SY_LM.MovementSpeedMapGradientHue>Movement Speed: Colour gradient hues</SY_LM.MovementSpeedMapGradientHue>
+	<SY_LM.TooltipMovementSpeedMapGradientHue>Set colours for the gradient as hue in degrees, according to movement speed:
+
+no path	= black
+1-99%	= [1st] to [2nd]
+100%	= white
+100+%	= [3rd] (probably unachievable)</SY_LM.TooltipMovementSpeedMapGradientHue>
 	
 	<SY_LM.BeautyMapIconButtonVisible>Beauty: Show icon button</SY_LM.BeautyMapIconButtonVisible>
 	<SY_LM.BeautyMapAverageBeauty>Beauty: Use average beauty; WARNING!</SY_LM.BeautyMapAverageBeauty>
@@ -24,6 +46,16 @@
 This mode is VERY VERY SLOW, but calculates the average beauty per tile as used for the beauty need of pawns.
 
 You will not be able to unpause the game while this overlay is active!</SY_LM.TooltipBeautyMapAverageBeauty>
+	<SY_LM.BeautyMapGradientHue>Movement Speed: Colour gradient hues</SY_LM.BeautyMapGradientHue>
+	<SY_LM.TooltipBeautyMapGradientHue>Set colours for the gradient as hue in degrees, according to beauty</SY_LM.TooltipBeautyMapGradientHue>
 
-	<SY_LM.TooltipMapIconButtonVisible>Toggles whether the icon button for this map mode is shown ingame in the lower right</SY_LM.TooltipMapIconButtonVisible>	
+	<SY_LM.TooltipMapIconButtonVisible>Toggles whether the icon button for this map mode is shown ingame in the lower right</SY_LM.TooltipMapIconButtonVisible>
+	
+	<SY_LM.TooltipHue>- Colours:
+0°	= red
+60°	= yellow
+120°	= green
+180°	= cyan
+240°	= blue
+300°	= magenta</SY_LM.TooltipHue>
 </LanguageData>

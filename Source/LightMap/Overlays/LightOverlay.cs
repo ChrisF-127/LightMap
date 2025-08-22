@@ -1,14 +1,12 @@
-﻿using System;
-using UnityEngine;
-using RimWorld;
+﻿using UnityEngine;
 using Verse;
 
 namespace LightMap.Overlays
 {
-    public class LightOverlay : OverlayBase
+	public class LightOverlay : OverlayBase
 	{
 		#region FIELDS
-		private Color[] _mappedColors = null;
+		private readonly Color[] _mappedColors = new Color[12];
 		private readonly bool _showRoofedOnly;
 		#endregion
 
@@ -21,34 +19,51 @@ namespace LightMap.Overlays
 		}
 		#endregion
 
-		#region PRIVATE METHODS
+		#region PUBLIC METHODS
 		private void CreateMappedColors()
 		{
-			_mappedColors = new Color[11];
+			var hues = LightMap.Settings.LightMapGradientHue;
+			var bright = hues[2].Value.ToColor();		// considered lit or brightly lit, light level for growing most plants
+			var litHue = hues[1].Value;
+			var lit = litHue.ToColor();					// considered lit, most artificial lights
+			var darkHue = hues[0].Value;
+			var dark = darkHue.ToColor();               // considered dark
+			if (litHue < darkHue)
+				litHue += 360f;
+			var step = (darkHue - litHue) / (2f * 3f);	// lit -> dark; halfway between lit/dark colors & three steps for bigger difference between 50% and 40%
 
-			_mappedColors[10] = new Color(1, 1, 1);
-			_mappedColors[9] = new Color(0.75f, 1, 1);
+			_mappedColors[11] = new Color(1f, 1f, 1f);	// >=100% brightly lit - white
+			_mappedColors[10] = bright.ToWhite(0.85f);	// >  90% brightly lit
+			_mappedColors[9] = bright.ToWhite(0.6f);	// >  80% lit
+			_mappedColors[8] = bright.ToWhite(0.4f);	// >  70% lit
+			_mappedColors[7] = bright.ToWhite(0.2f);	// >  60% lit
+			_mappedColors[6] = bright;                  // >  50% lit - default: cyan (setting)
 
-			_mappedColors[8] = new Color(0, 1, 1);
-			_mappedColors[7] = new Color(0, 1, 0.75f);
-			_mappedColors[6] = new Color(0, 1, 0.5f);
-			_mappedColors[5] = new Color(0, 1, 0);
+			_mappedColors[5] = lit;                     //  = 50% lit - default: green (setting)
+			_mappedColors[4] = lit.ChangeHue(step * 2);	// >  40% lit
+			_mappedColors[3] = lit.ChangeHue(step * 3); // >  30% lit - default: yellow
 
-			_mappedColors[4] = new Color(0.75f, 1, 0);
-			_mappedColors[3] = new Color(1, 1, 0);
-
-			_mappedColors[2] = new Color(1, 0, 0);
-			_mappedColors[1] = new Color(0.5f, 0, 0);
-			_mappedColors[0] = new Color(0, 0, 0);
+			_mappedColors[2] = dark;                    // >  20% dark - default: red (setting)
+			_mappedColors[1] = dark.ToBlack(0.5f);		// >  10% dark
+			_mappedColors[0] = new Color(0f, 0f, 0f);	// >=  0% dark - black
 		}
+		#endregion
 
+		#region PRIVATE METHODS
 		private Color GetColorForGlow(float glow)
 		{
-			int index = (int)(glow * 10.0);
-			if (index > 10)
-				index = 10;
-			else if (index < 0)
-				index = 0;
+			var index = (int)(glow * 10.0f);
+			if (glow > 0.5f)
+			{
+				index++;
+				if (index >= _mappedColors.Length)
+					index = _mappedColors.Length;
+			}
+			else
+			{
+				if (index < 0)
+					index = 0;
+			}
 			return _mappedColors[index];
 		}
 		#endregion
@@ -57,8 +72,8 @@ namespace LightMap.Overlays
 		public override bool GetCellBool(int index)
 		{
 			var map = Find.CurrentMap;
-            if (map.fogGrid.IsFogged(index))
-                return false;
+			if (map.fogGrid.IsFogged(index))
+				return false;
 
 			var cell = map.cellIndices.IndexToCell(index);
 			if (!_showRoofedOnly)
@@ -86,7 +101,7 @@ namespace LightMap.Overlays
 				//	return true;
 				//}
 			}
-            return false;
+			return false;
 		}
 		#endregion
 	}

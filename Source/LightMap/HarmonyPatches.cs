@@ -1,11 +1,7 @@
 ﻿using HarmonyLib;
 using RimWorld;
-using RimWorld.Planet;
 using System;
-using System.Reflection;
 using Verse;
-using System.Collections.Generic;
-using System.Collections;
 
 namespace LightMap
 {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using Verse;
 
 namespace LightMap.Overlays
@@ -18,7 +13,8 @@ namespace LightMap.Overlays
 		#endregion
 
 		#region PROPERTIES
-		public virtual Color Color => Color.white;
+		public virtual Color Color => 
+			Color.white;
 
 		public virtual CellBoolDrawer Drawer
 		{

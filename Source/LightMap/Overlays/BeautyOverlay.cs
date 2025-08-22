@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using RimWorld;
 using Verse;
-using System.Runtime.InteropServices;
 
 namespace LightMap.Overlays
 {
@@ -30,11 +25,10 @@ namespace LightMap.Overlays
 		}
 
 		#region FIELDS
-		private Color[] _mappedColors = null;
+		private readonly Color[] _mappedColors = new Color[22];
 
 		private readonly bool _useAverage = false;
 		private readonly float _beautyFactor = 1f;
-		private readonly HashSet<Thing> _countedThingList = new HashSet<Thing>();
 
 		private readonly Func<IntVec3, Map, float> _beautyCalculation = null;
 		#endregion
@@ -45,14 +39,18 @@ namespace LightMap.Overlays
 		#region PRIVATE METHODS
 		private void CreateMappedColors()
 		{
-			_mappedColors = new Color[22];
-
 			_mappedColors[21] = new Color(0f, 0f, 0f, 0f);
 
-			var pink = new Color(1f, 0f, 1f);
-			var deg = (240f / (_mappedColors.Length - 1));
-			for (int i = 0; i < 21; i++)
-				_mappedColors[i] = pink.ChangeHue(i * deg);
+			var hues = LightMap.Settings.BeautyMapGradientHue;
+			var maxHue = hues[1].Value;
+			var minHue = hues[0].Value;
+			var min = minHue.ToColor();
+			if (maxHue < minHue)
+				maxHue += 360f;
+			var step = (maxHue - minHue) / (_mappedColors.Length - 1);	// min -> max
+
+			for (int i = 0; i < _mappedColors.Length - 1; i++)
+				_mappedColors[i] = min.ChangeHue(step * i);
 		}
 
 		private float GetBeautyForIndex(int index, Map map)

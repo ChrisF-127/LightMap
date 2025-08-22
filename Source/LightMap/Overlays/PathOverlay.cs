@@ -1,44 +1,43 @@
-﻿using System;
-using UnityEngine;
-using RimWorld;
+﻿using UnityEngine;
 using Verse;
 
 namespace LightMap.Overlays
 {
 	public class PathOverlay : OverlayBase
 	{
+		#region FIELDS
+		private readonly Color[] _mappedColors = new Color[13];
+		#endregion
+
+		#region CONSTRUCTORS
 		public PathOverlay()
 		{
 			CreateMappedColors();
 		}
-
-		#region FIELDS
-		private Color[] _mappedColors = null;
-		#endregion
-
-		#region PROPERTIES
 		#endregion
 
 		#region PRIVATE METHODS
 		private void CreateMappedColors()
 		{
-			_mappedColors = new Color[13];
+			var hues = LightMap.Settings.MovementSpeedMapGradientHue;
+			var over = hues[2].Value.ToColor();
+			var maxHue = hues[1].Value;
+			var max = maxHue.ToColor();
+			var minHue = hues[0].Value;
+			var min = minHue.ToColor();
+			if (maxHue < minHue)
+				maxHue += 360f;
+			var step = (maxHue - minHue) / 9f;			// min -> max
 
-			_mappedColors[12] = new Color	(0,		0.25f,	1); // > 100%; blue-ish
-			_mappedColors[11] = new Color	(1,		1,		1); // = 100%; white
+			_mappedColors[12] = over;					// > 100% - default: cyan (setting)
+			_mappedColors[11] = new Color(1f, 1f, 1f);	// = 100% -  white
 
-			_mappedColors[10] = new Color	(0,		1,		0); // < 100%; green
-			_mappedColors[9] = new Color	(0.25f, 1,		0); // < 90%
-			_mappedColors[8] = new Color	(0.5f,	1,		0); // < 80%
-			_mappedColors[7] = new Color	(0.75f, 1,		0); // < 70%
-			_mappedColors[6] = new Color	(1,		1,		0); // < 60%; yellow
-			_mappedColors[5] = new Color	(1,		0.8f,	0); // < 50%
-			_mappedColors[4] = new Color	(1,		0.6f,	0); // < 40%
-			_mappedColors[3] = new Color	(1,		0.4f,	0); // < 30%
-			_mappedColors[2] = new Color	(1,		0.2f,	0); // < 20%
-			_mappedColors[1] = new Color	(1,		0,		0); // < 10%; red
+			_mappedColors[10] = max;					// < 100% - default: green (setting)
+			for (int i = 9; i > 1; i--)					// <  90% to <  20%
+				_mappedColors[i] = min.ChangeHue(step * (i - 1));
+			_mappedColors[1] = min;                     // <  10% - default: red (setting)
 
-			_mappedColors[0] = new Color	(0,		0,		0); // no path; black
+			_mappedColors[0] = new Color(0f, 0f, 0f);	// no path -  black
 		}
 
 		private Color GetColorForPathCost(int pathCost)
