@@ -13,6 +13,9 @@ namespace LightMap
 		public static Color ToBlack(this Color color, float max) =>
 			new Color(Mathf.Min(color.r, max), Mathf.Min(color.g, max), Mathf.Min(color.b, max));
 
+		public static float GetHueStepWidth(float from, float to, int steps) =>
+			(from - to) / steps;
+
 		public static Color ChangeLightness(this Color color, float coeff)
 		{
 			ColorToHSV(color, out float h, out float s, out float v);

@@ -23,29 +23,27 @@ namespace LightMap.Overlays
 		private void CreateMappedColors()
 		{
 			var hues = LightMap.Settings.LightMapGradientHue;
-			var bright = hues[2].Value.ToColor();		// considered lit or brightly lit, light level for growing most plants
+			var bright = hues[2].Value.ToColor();				// considered lit or brightly lit, light level for growing most plants
 			var litHue = hues[1].Value;
-			var lit = litHue.ToColor();					// considered lit, most artificial lights
 			var darkHue = hues[0].Value;
-			var dark = darkHue.ToColor();               // considered dark
-			if (litHue < darkHue)
-				litHue += 360f;
-			var step = (darkHue - litHue) / (2f * 3f);	// lit -> dark; halfway between lit/dark colors & three steps for bigger difference between 50% and 40%
+			var dark = darkHue.ToColor();						// considered dark
 
-			_mappedColors[11] = new Color(1f, 1f, 1f);	// >=100% brightly lit - white
-			_mappedColors[10] = bright.ToWhite(0.85f);	// >  90% brightly lit
-			_mappedColors[9] = bright.ToWhite(0.6f);	// >  80% lit
-			_mappedColors[8] = bright.ToWhite(0.4f);	// >  70% lit
-			_mappedColors[7] = bright.ToWhite(0.2f);	// >  60% lit
-			_mappedColors[6] = bright;                  // >  50% lit - default: cyan (setting)
+			var step = ColorExtensions.GetHueStepWidth(litHue, darkHue, 2 * 3); // lit -> dark; halfway between lit/dark colors & three steps for bigger difference between 50% and 40%
 
-			_mappedColors[5] = lit;                     //  = 50% lit - default: green (setting)
-			_mappedColors[4] = lit.ChangeHue(step * 2);	// >  40% lit
-			_mappedColors[3] = lit.ChangeHue(step * 3); // >  30% lit - default: yellow
+			_mappedColors[11] = new Color(1f, 1f, 1f);			// >=100% brightly lit - white
+			_mappedColors[10] = bright.ToWhite(0.85f);			// >  90% brightly lit
+			_mappedColors[9] = bright.ToWhite(0.6f);			// >  80% lit
+			_mappedColors[8] = bright.ToWhite(0.4f);			// >  70% lit
+			_mappedColors[7] = bright.ToWhite(0.2f);			// >  60% lit
+			_mappedColors[6] = bright;							// >  50% lit - default: cyan (setting)
 
-			_mappedColors[2] = dark;                    // >  20% dark - default: red (setting)
-			_mappedColors[1] = dark.ToBlack(0.5f);		// >  10% dark
-			_mappedColors[0] = new Color(0f, 0f, 0f);	// >=  0% dark - black
+			_mappedColors[5] = litHue.ToColor();				//  = 50% lit - default: green (setting)
+			_mappedColors[4] = (darkHue + step * 4).ToColor();	// >  40% lit
+			_mappedColors[3] = (darkHue + step * 3).ToColor();	// >  30% lit - default: yellow
+
+			_mappedColors[2] = dark;							// >  20% dark - default: red (setting)
+			_mappedColors[1] = dark.ToBlack(0.5f);				// >  10% dark
+			_mappedColors[0] = new Color(0f, 0f, 0f);			// >=  0% dark - black
 		}
 		#endregion
 

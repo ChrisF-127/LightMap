@@ -13,8 +13,6 @@
 	<SY_LM.TooltipUpdateDelay>Update interval for the overlay</SY_LM.TooltipUpdateDelay>
 	
 	<SY_LM.LightMapIconButtonVisible>Light: Show icon button</SY_LM.LightMapIconButtonVisible>
-	<SY_LM.LightMapRoofedAreasOnly>Light: Roofed areas only</SY_LM.LightMapRoofedAreasOnly>
-	<SY_LM.TooltipLightMapRoofedAreasOnly>Only show brightness overlay for roofed areas</SY_LM.TooltipLightMapRoofedAreasOnly>
 	<SY_LM.LightMapGradientHue>Light: Colour gradient hues</SY_LM.LightMapGradientHue>
 	<SY_LM.TooltipLightMapGradientHue>Set colours for the gradient as hue in degrees, according to light level:
 
@@ -30,6 +28,8 @@
 80+%	= 60% from [3rd] to white
 90+%	= 85% from [3rd] to white
 100+%	= white</SY_LM.TooltipLightMapGradientHue>
+	<SY_LM.LightMapRoofedAreasOnly>Light: Roofed areas only</SY_LM.LightMapRoofedAreasOnly>
+	<SY_LM.TooltipLightMapRoofedAreasOnly>Only show brightness overlay for roofed areas</SY_LM.TooltipLightMapRoofedAreasOnly>
 	
 	<SY_LM.MovementSpeedMapIconButtonVisible>Movement Speed: Show icon button</SY_LM.MovementSpeedMapIconButtonVisible>
 	<SY_LM.MovementSpeedMapGradientHue>Movement Speed: Colour gradient hues</SY_LM.MovementSpeedMapGradientHue>
@@ -41,13 +41,13 @@ no path	= black
 100+%	= [3rd] (probably unachievable)</SY_LM.TooltipMovementSpeedMapGradientHue>
 	
 	<SY_LM.BeautyMapIconButtonVisible>Beauty: Show icon button</SY_LM.BeautyMapIconButtonVisible>
+	<SY_LM.BeautyMapGradientHue>Movement Speed: Colour gradient hues</SY_LM.BeautyMapGradientHue>
+	<SY_LM.TooltipBeautyMapGradientHue>Set colours for the gradient as hue in degrees, according to beauty</SY_LM.TooltipBeautyMapGradientHue>
 	<SY_LM.BeautyMapAverageBeauty>Beauty: Use average beauty; WARNING!</SY_LM.BeautyMapAverageBeauty>
 	<SY_LM.TooltipBeautyMapAverageBeauty>WARNING
 This mode is VERY VERY SLOW, but calculates the average beauty per tile as used for the beauty need of pawns.
 
 You will not be able to unpause the game while this overlay is active!</SY_LM.TooltipBeautyMapAverageBeauty>
-	<SY_LM.BeautyMapGradientHue>Movement Speed: Colour gradient hues</SY_LM.BeautyMapGradientHue>
-	<SY_LM.TooltipBeautyMapGradientHue>Set colours for the gradient as hue in degrees, according to beauty</SY_LM.TooltipBeautyMapGradientHue>
 
 	<SY_LM.TooltipMapIconButtonVisible>Toggles whether the icon button for this map mode is shown ingame in the lower right</SY_LM.TooltipMapIconButtonVisible>
 	
@@ -57,5 +57,9 @@ You will not be able to unpause the game while this overlay is active!</SY_LM.To
 120°	= green
 180°	= cyan
 240°	= blue
-300°	= magenta</SY_LM.TooltipHue>
+300°	= magenta
+Colours wrap around at 360° 
+ e.g. 360=0 or 540=180
+This can be used to create backward gradients, for example red (360) to green (120) via blue (240) instead of red (0) to green (120) via yellow (60)
+</SY_LM.TooltipHue>
 </LanguageData>

@@ -20,22 +20,17 @@ namespace LightMap.Overlays
 		private void CreateMappedColors()
 		{
 			var hues = LightMap.Settings.MovementSpeedMapGradientHue;
-			var over = hues[2].Value.ToColor();
-			var maxHue = hues[1].Value;
-			var max = maxHue.ToColor();
-			var minHue = hues[0].Value;
-			var min = minHue.ToColor();
-			if (maxHue < minHue)
-				maxHue += 360f;
-			var step = (maxHue - minHue) / 9f;			// min -> max
+			var max = hues[1].Value;
+			var min = hues[0].Value;
+			var step = ColorExtensions.GetHueStepWidth(max, min, 9);
 
-			_mappedColors[12] = over;					// > 100% - default: cyan (setting)
+			_mappedColors[12] = hues[2].Value.ToColor();// > 100% - default: cyan (setting)
 			_mappedColors[11] = new Color(1f, 1f, 1f);	// = 100% -  white
 
-			_mappedColors[10] = max;					// < 100% - default: green (setting)
+			_mappedColors[10] = max.ToColor();			// < 100% - default: green (setting)
 			for (int i = 9; i > 1; i--)					// <  90% to <  20%
-				_mappedColors[i] = min.ChangeHue(step * (i - 1));
-			_mappedColors[1] = min;                     // <  10% - default: red (setting)
+				_mappedColors[i] = (min + step * (i - 1)).ToColor();
+			_mappedColors[1] = min.ToColor();			// <  10% - default: red (setting)
 
 			_mappedColors[0] = new Color(0f, 0f, 0f);	// no path -  black
 		}

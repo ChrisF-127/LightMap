@@ -42,15 +42,12 @@ namespace LightMap.Overlays
 			_mappedColors[21] = new Color(0f, 0f, 0f, 0f);
 
 			var hues = LightMap.Settings.BeautyMapGradientHue;
-			var maxHue = hues[1].Value;
-			var minHue = hues[0].Value;
-			var min = minHue.ToColor();
-			if (maxHue < minHue)
-				maxHue += 360f;
-			var step = (maxHue - minHue) / (_mappedColors.Length - 1);	// min -> max
+			var max = hues[1].Value;
+			var min = hues[0].Value;
+			var step = ColorExtensions.GetHueStepWidth(max, min, _mappedColors.Length - 1);
 
 			for (int i = 0; i < _mappedColors.Length - 1; i++)
-				_mappedColors[i] = min.ChangeHue(step * i);
+				_mappedColors[i] = (min + step * i).ToColor();
 		}
 
 		private float GetBeautyForIndex(int index, Map map)
